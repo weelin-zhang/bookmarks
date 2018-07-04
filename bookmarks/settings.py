@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'account',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,3 +120,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+'''
+MEDIA_URL 是管理用户上传的多媒体文件的主URL，MEDIA_ROOT是这些文件在本地保存的路径
+我们动态的构建这些路径相对我们的项目路径来确保我们的代码更通用化。
+'''
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+
+AUTH_USER_MODEL = "auth.User"
+
+# 自定义认证后端
+'''
+我们保留默认的ModelBacked用来保证用户仍然可以通过用户名和密码进行认证，
+接着我们包含进了我们自己的email-based认证（authentication）后台
+'''
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+   'account.authentication.EmailAuthBackend',
+)
