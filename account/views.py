@@ -1,11 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm, UserRegistrationForm
 from .models import Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
 
 def user_login(request):
     if request.method == 'POST':
@@ -17,7 +16,10 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Authenticated successfully')
+                    redirect_url = request.get_full_path().split('?next=')[1]
+                    # print(request.build_absolute_uri(redirect_url))
+                    return  redirect(redirect_url)
+                    # return HttpResponse('Authenticated successfully')
                 else:
                     return HttpResponse('Disabled account')
             else:
@@ -53,7 +55,7 @@ def register(request):
 
 from .forms import UserEditForm, ProfileEditForm
 
-@login_required
+@login_required(login_url="/account/login/")
 def edit(request):
     if request.method == 'POST':
         user_form = UserEditForm(data=request.POST)
