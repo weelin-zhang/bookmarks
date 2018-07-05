@@ -13,10 +13,14 @@ def user_login(request):
             cd = form.cleaned_data
             user = authenticate(username=cd['username'],
                                 password=cd['password'])
+
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    redirect_url = request.get_full_path().split('?next=')[1]
+                    try:
+                        redirect_url = request.get_full_path().split('?next=')[1]
+                    except:
+                        redirect_url="/"
                     # print(request.build_absolute_uri(redirect_url))
                     return  redirect(redirect_url)
                     # return HttpResponse('Authenticated successfully')

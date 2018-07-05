@@ -141,6 +141,7 @@ AUTH_USER_MODEL = "auth.User"
 AUTHENTICATION_BACKENDS = (
    'django.contrib.auth.backends.ModelBackend',
    'account.authentication.EmailAuthBackend',
+   'account.authentication.LDAPAuthBackend',
 )
 
 
@@ -148,3 +149,12 @@ STATICFILES_DIRS=(
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'media'),
 )
+
+
+# ldap
+# The URL of the LDAP server.
+LDAP_AUTH_URL = "ldap://192.168.20.104:389"
+
+# The LDAP search base for looking up users.
+LDAP_AUTH_SEARCH_BASE = "ou=People,dc=srv,dc=world"
+
