@@ -25,5 +25,8 @@ urlpatterns = [
     url(r'^images/', include('images.urls', namespace='images')),
 ]
 
+
+# 生产慎用,使用/static/xx/images/xxx/yy/1.jpg
 if settings.DEBUG:
+    pass
     urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

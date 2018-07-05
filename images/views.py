@@ -31,6 +31,10 @@ def image_create(request):
 
 from django.shortcuts import get_object_or_404
 from .models import Image
+
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='/account/login/')
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
     return render(request, 'images/image/detail.html', {'image': image})
