@@ -158,3 +158,52 @@ LDAP_AUTH_URL = "ldap://192.168.20.104:389"
 # The LDAP search base for looking up users.
 LDAP_AUTH_SEARCH_BASE = "ou=People,dc=srv,dc=world"
 
+
+# 缓存设置
+'''
+BACKEND：使用的缓存后端。
+KEY_FUNCTION：包含一个指向回调函数的点路径的字符，这个函数以prefix(前缀)、verision(版本)、和 key (键) 作为参数并返回最终缓存键（cache key）。
+KEY_PREFIX：一个用于所有缓存键的字符串，避免冲突。
+LOCATION：缓存的位置。基于你的缓存后端，这可能是一个路径、一个主机和端口，或者是内存中后端的名字。
+OPTIONS：任何额外的传递向缓存后端的参数。
+TIMEOUT：默认的超时时间，以秒为单位，用于储存缓存键。默认设置是 300 秒，也就是五分钟。如果把它设置为 None ，缓存键将不会过期。
+VERSION：默认的缓存键的版本。对于缓存版本是很有用的
+'''
+
+'''
+Memcached中的key-value:
+
+stats cachedump 1 10
+ITEM prefix_:1:niubi [3 b; 1531123840 s]
+ITEM :1:niubi [3 b; 1531123729 s]
+ITEM userId [5 b; 0 s]
+'''
+# CACHES = {
+    # 'default': {
+        # 'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        # 'LOCATION': './aaa'
+
+        # 'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        # 'LOCATION': '192.168.20.104:11211',
+        # 'KEY_PREFIX': "prefix_"
+    # }
+# }
+
+
+'''
+# redis 127.0.0.1:6379[15]> keys *
+1) ":1:rediskey01"
+'''
+CACHES = {
+    "default": {
+        # "BACKEND": "django_redis.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.20.104:6379/15",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+            "PASSWORD": 'xxxxxx'
+        }
+    }
+}
